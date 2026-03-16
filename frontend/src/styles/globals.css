@@ -1,0 +1,152 @@
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    /* ============================= */
+    /* 🌿 iOS Pro Design System     */
+    /* ============================= */
+
+    /* Apple-like font smoothing */
+    html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* System Font Stack (เหมือน iOS) */
+    body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    @apply bg-gradient-to-br from-slate-50 via-emerald-50 to-teal-100 text-gray-900;
+    }
+
+    /* ============================= */
+    /* 💎 Glass Card                */
+    /* ============================= */
+
+    .ios-card {
+    @apply bg-white/80 backdrop-blur-2xl
+    rounded-3xl shadow-xl
+    border border-white/40
+    transition-all duration-300;
+    }
+
+    .ios-card:hover {
+    @apply shadow-2xl;
+    transform: translateY(-2px);
+    }
+
+    /* ============================= */
+    /* 🔘 iOS Button                */
+    /* ============================= */
+
+    .ios-button {
+    @apply px-6 py-3 rounded-full
+    font-medium transition-all duration-200
+    bg-emerald-600 text-white
+    shadow-md;
+    }
+
+    .ios-button:hover {
+    @apply bg-emerald-700 shadow-lg;
+    transform: translateY(-1px);
+    }
+
+    .ios-button-outline {
+    @apply px-6 py-3 rounded-full
+    font-medium transition-all duration-200
+    border border-gray-300 text-gray-700 bg-white;
+    }
+
+    .ios-button-outline:hover {
+    @apply bg-gray-100;
+    }
+
+    /* ============================= */
+    /* ⭐ Star Rating                */
+    /* ============================= */
+
+    .star-active {
+    @apply text-yellow-400;
+    }
+
+    .star-inactive {
+    @apply text-gray-300;
+    }
+
+    /* ============================= */
+    /* 🪟 Modal Glass                */
+    /* ============================= */
+
+    .ios-modal {
+    @apply bg-white/90 backdrop-blur-2xl
+    rounded-3xl shadow-2xl
+    border border-white/50;
+    }
+
+    /* ============================= */
+    /* 📍 Navbar Glass              */
+    /* ============================= */
+
+    .ios-navbar {
+    @apply bg-white/70 backdrop-blur-xl
+    border-b border-gray-200
+    shadow-sm;
+    }
+
+    /* ============================= */
+    /* 🧊 Soft Section Spacing      */
+    /* ============================= */
+
+    .section-title {
+    @apply text-xl font-semibold tracking-tight text-gray-900;
+    }
+
+    .section-content {
+    @apply text-gray-600 leading-relaxed;
+    }
+
+    /* ============================= */
+    /* ✨ Smooth Fade Animation     */
+    /* ============================= */
+
+    .fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    }
+
+    /* ============================= */
+    /* 🌙 Dark Mode (Class Based)   */
+    /* ============================= */
+
+    /* 🔥 เปลี่ยนจาก @media เป็น .dark */
+
+    .dark body {
+    @apply bg-slate-900 text-gray-100;
+    }
+
+    .dark .ios-card {
+    @apply bg-slate-800/80 border-slate-700;
+    }
+
+    .dark .ios-navbar {
+    @apply bg-slate-900/70 border-slate-700;
+    }
+
+    .dark .ios-button-outline {
+    @apply border-slate-600 text-gray-200 bg-slate-800;
+    }
+
+    .dark .ios-button-outline:hover {
+    @apply bg-slate-700;
+    }

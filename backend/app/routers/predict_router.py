@@ -59,7 +59,7 @@ VEGETABLE_INFO = {
         "properties": "ช่วยขับลม เจริญอาหาร",
         "recommended_menu": "ลาบ, น้ำตก",
         "botanical_description": "ลำต้นทอดเลื้อยไปตามผิวดิน ชูยอดขึ้นรับแสง มีขนปกคลุมเล็กน้อย ใบเดี่ยวเรียงตรงข้ามสลับตั้งฉาก รูปไข่ ปลายใบแหลม ขอบใบจักฟันเลื่อย ดอกเป็นช่อออกตามซอกใบใกล้ปลายยอด สีเหลือง เมล็ดรูปรี สีน้ำตาลเข้ม",
-        "images": ["/images/phakphet1.png", "/images/phakphet2.png", "/images/phakphet3.png"]
+        "images": ["/images/phak_phet1.png", "/images/phak_phet2.png", "/images/phak_phet3.png"]
     },
     "RattailedRadish": {
         "thai_name": "ผักขี้หูด",
@@ -68,7 +68,7 @@ VEGETABLE_INFO = {
         "properties": "ช่วยระบายอ่อน ๆ",
         "recommended_menu": "แกงผักขี้หูด",
         "botanical_description": "ลำต้นตั้งตรง มีขนแข็งปกคลุมเล็กน้อย ต้นขึ้นเป็นกอเหมือนกับผักกาดเขียว มีความสูงได้ประมาณ 30-100 เซนติเมตร ลำต้นเป็นรูปทรงกลมหรือทรงกระบอก ส่วนกลางของลำต้นจะกลวง ก้านใบแทงขึ้นจากดิน ดอกสีเหลือง",
-        "images": ["/images/kheehud1.png", "/images/kheehud2.png", "/images/kheehud3.png"]
+        "images": ["/images/khee_hud1.png", "/images/khee_hud2.png", "/images/khee_hud3.png"]
     },
 }
 

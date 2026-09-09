@@ -75,7 +75,7 @@ VEGETABLE_INFO = {
 
 router = APIRouter(prefix="/predict", tags=["Prediction"])
 
-CONFIDENCE_THRESHOLD = 0.37
+CONFIDENCE_THRESHOLD = 0.20
 
 
 # =============================================================

@@ -74,7 +74,7 @@ VEGETABLE_INFO = {
 
 router = APIRouter(prefix="/predict", tags=["Prediction"])
 
-CONFIDENCE_THRESHOLD = 0.50
+CONFIDENCE_THRESHOLD = 0.60  # 🔧 แก้: ปรับจาก 0.50 → 0.60 (47.6% ควรถูกกรองออก)
 
 
 # =============================================================
@@ -147,18 +147,32 @@ async def predict_top3(file: UploadFile = File(...)):
     top3_result = predict_image_top3(image, top_k=3)
 
     # =============================================
-    # 🔥 เช็ค Threshold ด้วยค่า confidence จริง (ก่อน temperature)
-    # ถ้า raw confidence ของอันดับ 1 ต่ำกว่า threshold
-    # = ภาพไม่ใช่ผัก → บอกผู้ใช้เลย ไม่แสดง Top 3
+    # 🔧 แก้: กันเคส candidates ว่าง (ไม่ควรเกิด แต่กันไว้)
     # =============================================
-    raw_conf = top3_result["raw_top1_confidence"]
-
-    if raw_conf < CONFIDENCE_THRESHOLD:
+    if not top3_result.get("candidates"):
         return {
             "top_candidates": [],
             "best_match": {
                 "class_name": "Unknown",
-                "confidence": round(raw_conf * 0.96, 4),
+                "confidence": 0,
+                "message": "ไม่สามารถจำแนกได้ กรุณาถ่ายภาพผักแล้วลองใหม่อีกครั้ง"
+            }
+        }
+
+    # =============================================
+    # 🔧 แก้: เช็ค threshold จากค่า confidence ที่จะแสดงจริง
+    # (หลังคูณ 0.96) แทนการใช้ raw_top1_confidence (ก่อน temperature)
+    # เพราะค่า raw มักสูงกว่าค่าที่ user เห็นจริง ทำให้ threshold เดิมหลุด
+    # =============================================
+    top1_raw = float(top3_result["candidates"][0]["confidence"])
+    displayed_conf = round(top1_raw * 0.96, 4)
+
+    if displayed_conf < CONFIDENCE_THRESHOLD:
+        return {
+            "top_candidates": [],
+            "best_match": {
+                "class_name": "Unknown",
+                "confidence": displayed_conf,
                 "message": "ไม่สามารถจำแนกได้ ภาพนี้อาจไม่ใช่ผักพื้นบ้าน กรุณาถ่ายภาพผักแล้วลองใหม่อีกครั้ง"
             }
         }

@@ -1,10 +1,5 @@
 """
 app/services/predict_service.py
-
-✅ ของเดิม: predict_image() — ไม่แตะ
-🆕 เพิ่มใหม่: predict_image_top3() — เรียก predict_top3 จาก inference.py
-
-วิธีใช้: แทนที่ไฟล์ predict_service.py เดิม
 """
 from app.ml.model_loader import load_model
 from app.ml.inference import predict, predict_top3
@@ -12,6 +7,10 @@ import threading
 
 _model = None
 _model_lock = threading.Lock()
+
+# 🆕 ตั้งค่า threshold ตรงนี้ ปรับได้ตามที่เทสแล้วเหมาะสม
+CONFIDENCE_THRESHOLD = 0.75   # ต่ำกว่านี้ = ไม่มั่นใจ
+GAP_THRESHOLD = 0.12          # ถ้าอันดับ1-2 ห่างกันน้อยกว่านี้ = สับสน
 
 
 def _get_model():
@@ -34,22 +33,33 @@ def predict_image(image):
 
 
 # =============================================================
-# 🆕 ฟังก์ชันใหม่ — return Top 3
+# 🆕 ฟังก์ชันใหม่ — return Top 3 + เช็คความมั่นใจ
 # =============================================================
 def predict_image_top3(image, top_k=3):
     """
     จำแนกภาพแล้วคืนผล Top 3
-
-    Returns:
-        dict:
-        {
-            "candidates": [
-                {"class_name": "Para cress", "confidence": 0.68, "rank": 1},
-                {"class_name": "Neem tree", "confidence": 0.18, "rank": 2},
-                ...
-            ],
-            "raw_top1_confidence": 0.9812  # ค่าจริงก่อน temperature (ใช้เช็ค threshold)
-        }
+    พร้อมเช็คว่าโมเดลมั่นใจพอหรือไม่ (กันเคสภาพที่ไม่ใช่ผัก)
     """
     model = _get_model()
-    return predict_top3(model, image, top_k=top_k)
+    result = predict_top3(model, image, top_k=top_k)
+
+    candidates = result.get("candidates", [])
+    top1_confidence = result.get("raw_top1_confidence", 0)
+
+    # 🆕 เช็คเงื่อนไขความมั่นใจ
+    is_uncertain = False
+    reason = None
+
+    if top1_confidence < CONFIDENCE_THRESHOLD:
+        is_uncertain = True
+        reason = "low_confidence"
+    elif len(candidates) >= 2:
+        gap = candidates[0]["confidence"] - candidates[1]["confidence"]
+        if gap < GAP_THRESHOLD:
+            is_uncertain = True
+            reason = "ambiguous_result"
+
+    result["is_uncertain"] = is_uncertain
+    result["uncertain_reason"] = reason
+
+    return result

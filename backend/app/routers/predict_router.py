@@ -3,6 +3,7 @@ app/routers/predict_router.py
 
 ✅ ของเดิม: POST /predict/ — จำแนก Top 1 (ไม่แตะ ทำงานปกติ)
 🆕 เพิ่มใหม่: POST /predict/top3 — จำแนก Top 3 พร้อมข้อมูลผักครบ
+🆕 เพิ่มใหม่: เช็ค is_vegetable ก่อนแสดงผล กันเคสภาพไม่ใช่ผัก
 
 วิธีใช้: แทนที่ไฟล์ predict_router.py เดิม
 """
@@ -74,7 +75,7 @@ VEGETABLE_INFO = {
 
 router = APIRouter(prefix="/predict", tags=["Prediction"])
 
-CONFIDENCE_THRESHOLD = 0.65  # 🔧 แก้: ปรับจาก 0.50 → 0.60 (47.6% ควรถูกกรองออก)
+CONFIDENCE_THRESHOLD = 0.60
 
 
 # =============================================================
@@ -147,7 +148,22 @@ async def predict_top3(file: UploadFile = File(...)):
     top3_result = predict_image_top3(image, top_k=3)
 
     # =============================================
-    # 🔧 แก้: กันเคส candidates ว่าง (ไม่ควรเกิด แต่กันไว้)
+    # 🆕 เช็คก่อนเลย: ถ้าไม่ใช่ผักตั้งแต่ต้น (ตรวจด้วย MobileNetV2)
+    # → block ทันที ไม่ต้องดู confidence ของโมเดลผักเลย
+    # ดักเคส screenshot / เสื้อผ้า / คน ที่โมเดลผักมั่นใจผิดๆ
+    # =============================================
+    if not top3_result.get("is_vegetable", True):
+        return {
+            "top_candidates": [],
+            "best_match": {
+                "class_name": "Unknown",
+                "confidence": 0,
+                "message": "ภาพนี้ไม่ใช่ผักพื้นบ้าน กรุณาถ่ายภาพผักแล้วลองใหม่อีกครั้ง"
+            }
+        }
+
+    # =============================================
+    # กันเคส candidates ว่าง (ไม่ควรเกิด แต่กันไว้)
     # =============================================
     if not top3_result.get("candidates"):
         return {
@@ -160,9 +176,7 @@ async def predict_top3(file: UploadFile = File(...)):
         }
 
     # =============================================
-    # 🔧 แก้: เช็ค threshold จากค่า confidence ที่จะแสดงจริง
-    # (หลังคูณ 0.96) แทนการใช้ raw_top1_confidence (ก่อน temperature)
-    # เพราะค่า raw มักสูงกว่าค่าที่ user เห็นจริง ทำให้ threshold เดิมหลุด
+    # เช็ค threshold จากค่า confidence ที่จะแสดงจริง (หลังคูณ 0.96)
     # =============================================
     top1_raw = float(top3_result["candidates"][0]["confidence"])
     displayed_conf = round(top1_raw * 0.96, 4)

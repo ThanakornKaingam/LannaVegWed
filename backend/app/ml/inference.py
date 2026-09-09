@@ -46,7 +46,7 @@ def predict(model, image):
 # ค่ายิ่งสูง → confidence กระจายตัวมากขึ้น (อันดับ 2-3 ไม่ต่ำเวอร์)
 # 1.0 = ปกติ(เวอร์), 2.0 = กระจายปานกลาง, 3.0 = กระจายมาก
 # แนะนำ 2.0 - 3.0 สำหรับแสดง Top 3
-TEMPERATURE = 2.5
+TEMPERATURE = 4
 
 def predict_top3(model, image, top_k=3):
     """

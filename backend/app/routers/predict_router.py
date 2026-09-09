@@ -185,9 +185,11 @@ async def predict_top3(file: UploadFile = File(...)):
         return {
             "top_candidates": [],
             "best_match": {
-                "class_name": "Unknown",
+            "class_name": "Unknown",
                 "confidence": displayed_conf,
-                "message": "ไม่สามารถจำแนกได้ ภาพนี้อาจไม่ใช่ผักพื้นบ้าน กรุณาถ่ายภาพผักแล้วลองใหม่อีกครั้ง"
+                "debug_raw_top1": top3_result.get("raw_top1_confidence"),          # 🆕 debug ชั่วคราว
+                "debug_top1_candidate_conf": top1_raw,                              # 🆕 debug ชั่วคราว
+                "message": "ไม่สามารถจำแนกได้ ภาพนี้อาจไม่ใช่ผักพื้นบ้าน กรุณาถ่ายภาพผัก แล้วลองใหม่อีกครั้ง"
             }
         }
 

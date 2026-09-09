@@ -1,0 +1,21 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+fastapi==0.128.0
+uvicorn==0.40.0
+gunicorn==22.0.0
+
+SQLAlchemy==2.0.46
+psycopg2-binary==2.9.11
+python-dotenv==1.0.1
+python-multipart==0.0.21
+passlib==1.7.4
+bcrypt==5.0.0
+Authlib==1.6.6
+python-jose==3.5.0
+python-3.11.9
+
+torch==2.9.1+cpu
+torchvision==0.24.1+cpu
+psutil==5.9.8
+httpx==0.27.0
+

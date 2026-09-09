@@ -23,7 +23,7 @@ VEGETABLE_INFO = {
         "properties": "ช่วยขับลม แก้ท้องอืด บำรุงธาตุ",
         "recommended_menu": "ไส้อั่ว, น้ำพริกมะแขว่น",
         "botanical_description": "สูงประมาณ 5-10 เมตร มีหนามอยู่รอบลำต้นและกิ่ง ต้นอ่อนจะมีสีแดงแกมเขียว ลักษณะของใบเป็นใบประกอบ แต่ละใบจะมีใบย่อย 10-25 ใบ ช่อดอกเป็นช่อแบบกลุ่มย่อย มีสีขาวอมเทา ยาวประมาณ 10-20 เซนติเมตร เปลือกของผลสีเขียวเมื่อแก่จัดจะเปลี่ยนเป็นสีน้ำตาลเข้ม",
-        "images": ["/images/makwaen1.png", "/images/makwaen2.png", "/images/makwaen3.png"]
+        "images": ["/images/makhwaen1.png", "/images/makhwaen2.png", "/images/makhwaen3.png"]
     },
     "Neem tree": {
         "thai_name": "สะเดา",
@@ -74,7 +74,7 @@ VEGETABLE_INFO = {
 
 router = APIRouter(prefix="/predict", tags=["Prediction"])
 
-CONFIDENCE_THRESHOLD = 0.60  # 🔧 แก้: ปรับจาก 0.50 → 0.60 (47.6% ควรถูกกรองออก)
+CONFIDENCE_THRESHOLD = 0.65  # 🔧 แก้: ปรับจาก 0.50 → 0.60 (47.6% ควรถูกกรองออก)
 
 
 # =============================================================
